@@ -83,6 +83,84 @@ Open the local URL shown in the terminal to use the application.
 
 This project currently uses Ethereal Email for testing. You can open the preview link printed in the backend terminal to inspect a generated email. It is not intended for sending real emails to recipients.
 
+
+## Live Demo
+
+- **Frontend:** [ReachInbox Dashboard](https://reach-inbox-pearl-chi.vercel.app/)
+- **GitHub Repository:** [Shwetankkarn/ReachInbox](https://github.com/Shwetankkarn/ReachInbox)
+
+## Deployment Architecture
+
+The application uses a cloud-based deployment architecture:
+
+- **Frontend:** Deployed on Vercel.
+- **Backend API:** Node.js and Express.js running on an Ubuntu-based Amazon EC2 instance.
+- **Process Management:** systemd manages the backend API service.
+- **Database:** PostgreSQL stores application data.
+- **Job Queue:** BullMQ uses Redis to schedule and process delayed email jobs.
+- **Search:** Elasticsearch supports searching email records.
+- **Email Testing:** Ethereal Email with Nodemailer provides test email previews.
+- **Rate-Limit Notifications:** Slack integration sends notifications when email rate limits are reached.
+
+### Infrastructure and Documentation
+
+- [Amazon EC2](https://aws.amazon.com/ec2/)
+- [Vercel Documentation](https://vercel.com/docs)
+- [Docker Compose](https://docs.docker.com/compose/)
+- [BullMQ Documentation](https://docs.bullmq.io/)
+- [Redis Documentation](https://redis.io/docs/latest/)
+- [PostgreSQL Documentation](https://www.postgresql.org/docs/)
+- [Elasticsearch Documentation](https://www.elastic.co/guide/index.html)
+- [Slack API Documentation](https://api.slack.com/)
+- [Nodemailer Documentation](https://nodemailer.com/)
+
+## Key Features
+
+- Schedule emails for a specific date and time.
+- Process scheduled emails using persistent BullMQ jobs.
+- Configure worker concurrency and email rate limits.
+- Delay jobs when rate limits are reached.
+- Send Slack notifications when rate limits are hit.
+- Store email records in PostgreSQL.
+- Index and search email records using Elasticsearch.
+- Inspect background jobs using the Bull Board dashboard.
+- Preserve queued jobs across application restarts using Redis persistence.
+
+## Environment Configuration
+
+Configure the required environment variables locally and on the server. Refer to the project's environment configuration and example files for the exact variable names.
+
+Never commit `.env` files, passwords, API keys, OAuth client secrets, Slack tokens, or other credentials to GitHub.
+
+## Running the Project
+
+Install dependencies from the repository root:
+
+```bash
+npm install
+```
+
+Configure the required environment variables, then start the supporting services:
+
+```bash
+docker compose up -d
+```
+
+Build the API:
+
+```bash
+npm run build -w apps/api
+```
+
+For production deployment, configure the API service, database, Redis, Elasticsearch, OAuth credentials, and frontend API URL according to your environment.
+
+## Important Notes
+
+- Ethereal Email is a testing service; successful sending does not mean delivery to a real recipient's inbox.
+- The Bull Board dashboard and API endpoints may require authentication.
+- The API's public URL depends on the deployment and tunnel configuration. Use a stable HTTPS domain before documenting a permanent API URL.
+- Keep production credentials out of source control.
+
 ## Project structure
 
 ```text
