@@ -17,6 +17,7 @@ import { redis } from "./lib/redis";
 import { sessionRedis } from "./lib/sessionRedis";
 import emailRoutes from "./routes/email.routes";
 import authRoutes from "./routes/auth.routes";
+import slackRoutes from "./routes/slack.routes";
 import { emailQueue, EMAIL_QUEUE_NAME } from "./queues/email.queue";
 
 const app = express();
@@ -59,6 +60,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/auth", authRoutes);
+app.use("/auth/slack", slackRoutes);
 app.use("/api/emails", emailRoutes);
 
 // Health checks

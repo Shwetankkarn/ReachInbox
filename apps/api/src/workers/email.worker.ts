@@ -6,6 +6,7 @@ import { prisma } from "../lib/prisma";
 import { EMAIL_QUEUE_NAME } from "../queues/email.queue";
 import { sendTestEmail } from "../services/email.service";
 import { indexEmail } from "../lib/elasticsearch";
+import { notifySlackRateLimit } from "../services/slack.service";
 
 export const emailWorker = new Worker(
   EMAIL_QUEUE_NAME,
@@ -50,6 +51,15 @@ export const emailWorker = new Worker(
     });
 
     if (!reservation.allowed || reservation.allowedAt > now) {
+      try {
+        await notifySlackRateLimit(email.userId, reservation.allowedAt);
+      } catch (error) {
+        console.error(
+          "[Slack] Rate-limit alert failed:",
+          error instanceof Error ? error.message : error
+        );
+      }
+
       if (!token) {
         throw new Error("Cannot delay job: missing lock token");
       }
