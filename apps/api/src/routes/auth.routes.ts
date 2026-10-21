@@ -8,7 +8,7 @@ const router = Router();
 
 const clientID = process.env.GOOGLE_CLIENT_ID;
 const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
-const callbackURL = "http://localhost:3000/auth/google/callback";
+const callbackURL = `${process.env.API_BASE_URL || "http://localhost:3000"}/auth/google/callback`;
 
 if (clientID && clientSecret) {
   passport.use(
@@ -78,10 +78,10 @@ router.get("/google", (req, res, next) => {
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "http://localhost:5173/?login=failed",
+    failureRedirect: `${process.env.FRONTEND_URL || "http://localhost:5173"}/?login=failed`,
   }),
   (_req, res) => {
-    res.redirect("http://localhost:5173/?login=success");
+    res.redirect(`${process.env.FRONTEND_URL || "http://localhost:5173"}/?login=success`);
   }
 );
 

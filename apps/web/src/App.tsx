@@ -3,8 +3,9 @@ import { useCallback, useEffect, useState, type FormEvent } from "react";
 import "./App.css";
 import ThemeToggle from "./components/ThemeToggle";
 
-const API_URL = "http://localhost:3000/api/emails";
-const AUTH_URL = "http://localhost:3000/auth";
+const API_BASE_URL = (import.meta.env.VITE_API_URL || "http://localhost:3000").replace(/\/$/, "");
+const API_URL = `${API_BASE_URL}/api/emails`;
+const AUTH_URL = `${API_BASE_URL}/auth`;
 
 type Email = {
   id: string;

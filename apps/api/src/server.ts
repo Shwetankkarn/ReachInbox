@@ -20,6 +20,7 @@ import authRoutes from "./routes/auth.routes";
 import { emailQueue, EMAIL_QUEUE_NAME } from "./queues/email.queue";
 
 const app = express();
+app.set("trust proxy", 1);
 const PORT = Number(process.env.PORT) || 3000;
 
 const serverAdapter = new ExpressAdapter();
@@ -32,7 +33,7 @@ createBullBoard({
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5174"],
+    origin: [process.env.FRONTEND_URL, "http://localhost:5173", "http://localhost:5174"].filter((origin): origin is string => Boolean(origin)),
     credentials: true,
   })
 );
@@ -47,8 +48,8 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 24 * 60 * 60 * 1000,
     },
   })
