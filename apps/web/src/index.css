@@ -1,0 +1,382 @@
+
+@import "tailwindcss";
+
+/* =========================
+   Base styles
+========================= */
+:root {
+  font-family: "DM Sans", sans-serif;
+  color: #25243a;
+  background: #f8f9fc;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --app-bg: #f8f9fc;
+  --surface: #ffffff;
+  --text-primary: #25243a;
+  --text-secondary: #64748b;
+  --border-color: #e2e8f0;
+  --table-header-bg: #f1f5f9;
+  --table-row-hover: #f8fafc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-width: 320px;
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--app-bg);
+  color: var(--text-primary);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* =========================
+   Dark theme variables
+========================= */
+html.dark {
+  color-scheme: dark;
+
+  --app-bg: #0b1120;
+  --surface: #111827;
+  --text-primary: #e5e7eb;
+  --text-secondary: #a8b6cc;
+  --border-color: #374151;
+  --table-header-bg: #1e293b;
+  --table-row-hover: #1f2937;
+}
+
+html.dark body,
+html.dark #root {
+  background: var(--app-bg);
+  color: var(--text-primary);
+}
+
+html.dark .app-shell,
+html.dark .main-content {
+  background: var(--app-bg);
+  color: var(--text-primary);
+}
+
+/* =========================
+   Sidebar and topbar
+========================= */
+html.dark .sidebar,
+html.dark .topbar,
+html.dark .stat-card,
+html.dark .email-panel {
+  background-color: var(--surface);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+html.dark .sidebar {
+  border-right: 1px solid var(--border-color);
+}
+
+html.dark .topbar {
+  border-color: var(--border-color);
+}
+
+/* Main heading: Email Scheduler */
+html.dark .topbar h1 {
+  color: #c4b5fd !important;
+  opacity: 1 !important;
+}
+
+/* Breadcrumb and secondary text */
+html.dark .breadcrumb,
+html.dark .stat-card p,
+html.dark .email-panel p,
+html.dark .main-content footer {
+  color: var(--text-secondary);
+}
+
+/* Sidebar labels and navigation */
+html.dark .sidebar a,
+html.dark .sidebar button {
+  color: #cbd5e1;
+}
+
+/* Active navigation remains light with dark text */
+html.dark .sidebar a.active,
+html.dark .sidebar button.active,
+html.dark .sidebar .active {
+  background-color: #ede9fe !important;
+  color: #373078 !important;
+}
+
+/* Sidebar workspace and profile text */
+html.dark .sidebar h1,
+html.dark .sidebar h2,
+html.dark .sidebar h3,
+html.dark .sidebar strong {
+  color: #f3f4f6;
+}
+
+/* =========================
+   Stats and email panel
+========================= */
+html.dark .stat-card,
+html.dark .email-panel {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+}
+
+html.dark .stat-card h1,
+html.dark .stat-card h2,
+html.dark .stat-card h3,
+html.dark .email-panel h1,
+html.dark .email-panel h2,
+html.dark .email-panel h3 {
+  color: #f3f4f6;
+}
+
+/* =========================
+   Table readability
+========================= */
+html.dark table {
+  background-color: var(--surface);
+  color: var(--text-primary);
+  border-collapse: collapse;
+}
+
+html.dark table thead,
+html.dark table thead tr,
+html.dark table thead th {
+  background-color: var(--table-header-bg) !important;
+  color: #e2e8f0 !important;
+}
+
+html.dark table thead th {
+  border-bottom: 1px solid #475569 !important;
+  font-weight: 600;
+}
+
+html.dark table tbody tr {
+  background-color: var(--surface);
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+html.dark table tbody tr:hover {
+  background-color: var(--table-row-hover) !important;
+}
+
+html.dark table td {
+  color: #dbe4f0;
+  border-color: var(--border-color) !important;
+}
+
+/* Email recipient and subject */
+html.dark table td a {
+  color: #c4b5fd;
+}
+
+html.dark table td a:hover {
+  color: #ddd6fe;
+}
+
+/* =========================
+   Inputs and forms
+========================= */
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background-color: #1f2937;
+  color: #f9fafb;
+  border-color: #4b5563;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #9ca3af;
+}
+
+html.dark input:focus,
+html.dark textarea:focus,
+html.dark select:focus {
+  outline-color: #8b5cf6;
+  border-color: #8b5cf6;
+}
+
+/* =========================
+   Buttons
+========================= */
+html.dark .secondary-button {
+  background-color: #1f2937;
+  color: #f3f4f6;
+  border-color: #4b5563;
+}
+
+html.dark .secondary-button:hover {
+  background-color: #374151;
+}
+
+html.dark .primary-button {
+  color: #ffffff;
+}
+
+/* Keep theme toggle readable */
+html.dark .topbar-actions button {
+  border-color: #4b5563;
+}
+
+/* =========================
+   Tabs and dividers
+========================= */
+
+html.dark hr {
+  border-color: var(--border-color);
+}
+
+/* =========================
+   Modal and dropdown surfaces
+========================= */
+html.dark [role="dialog"],
+html.dark .modal,
+html.dark .modal-content,
+html.dark .dropdown-menu {
+  background-color: var(--surface);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+/* =========================
+   Smooth theme transition
+========================= */
+body,
+.app-shell,
+.sidebar,
+.main-content,
+.topbar,
+.stat-card,
+.email-panel,
+table,
+table th,
+table td {
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+/* ===== FIX: Dark mode sidebar navigation ===== */
+html.dark .sidebar .nav-item {
+  background: transparent !important;
+  color: #cbd5e1 !important;
+  border: 1px solid transparent;
+}
+
+html.dark .sidebar .nav-item.active {
+  background: #ede9fe !important;
+  color: #373078 !important;
+  border-color: #c4b5fd !important;
+}
+
+html.dark .sidebar .nav-item .nav-count {
+  background: #273449 !important;
+  color: #e2e8f0 !important;
+}
+
+html.dark .sidebar .nav-item.active .nav-count {
+  background: #ddd6fe !important;
+  color: #373078 !important;
+}
+
+/* ===== FIX: Scheduled / Sent tabs ===== */
+html.dark .email-panel .tabs .tab {
+  background: transparent !important;
+  color: #a8b6cc !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+}
+
+html.dark .email-panel .tabs .tab span {
+  background: #273449 !important;
+  color: #e2e8f0 !important;
+}
+
+html.dark .email-panel .tabs .tab.active-tab {
+  background: transparent !important;
+  color: #a78bfa !important;
+  border-bottom: 2px solid #8b5cf6 !important;
+}
+
+html.dark .email-panel .tabs .tab.active-tab span {
+  background: #ede9fe !important;
+  color: #373078 !important;
+}
+
+/* ===== FIX: Header visibility ===== */
+html.dark .topbar h1 {
+  color: #c4b5fd !important;
+  opacity: 1 !important;
+}
+
+/* ===== FIX: Table borders ===== */
+html.dark .email-panel table th,
+html.dark .email-panel table td {
+  border-color: #475569 !important;
+}
+
+html.dark .email-panel table thead th {
+  background: #1e293b !important;
+  color: #e2e8f0 !important;
+}
+
+
+/* Fix compose modal in dark mode */
+html.dark .modal,
+html.dark .modal-content,
+html.dark .compose-modal,
+html.dark .compose-form {
+  background: #111827 !important;
+  color: #e5e7eb !important;
+  border-color: #374151 !important;
+}
+
+html.dark .modal h1,
+html.dark .modal h2,
+html.dark .modal h3,
+html.dark .modal label,
+html.dark .compose-modal h1,
+html.dark .compose-modal h2,
+html.dark .compose-modal h3,
+html.dark .compose-modal label {
+  color: #e5e7eb !important;
+}
+
+html.dark .modal input,
+html.dark .modal textarea,
+html.dark .modal select,
+html.dark .compose-modal input,
+html.dark .compose-modal textarea,
+html.dark .compose-modal select,
+html.dark .compose-form input,
+html.dark .compose-form textarea,
+html.dark .compose-form select {
+  background: #1f2937 !important;
+  color: #f9fafb !important;
+  border-color: #475569 !important;
+}
+
+html.dark .modal input::placeholder,
+html.dark .modal textarea::placeholder,
+html.dark .compose-modal input::placeholder,
+html.dark .compose-modal textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+html.dark .modal button,
+html.dark .compose-modal button {
+  color: #e5e7eb;
+}

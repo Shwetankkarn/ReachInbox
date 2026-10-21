@@ -1,0 +1,51 @@
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  googleId  String   @unique
+  email     String   @unique
+  name      String
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  scheduledEmails ScheduledEmail[]
+}
+
+model ScheduledEmail {
+  id              String   @id @default(cuid())
+  recipientEmail  String
+  subject         String
+  body            String
+  scheduledAt     DateTime
+  status          EmailStatus @default(SCHEDULED)
+  idempotencyKey  String   @unique
+  attempts        Int      @default(0)
+  sentAt          DateTime?
+  errorMessage    String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+  @@index([scheduledAt, status])
+  @@index([recipientEmail])
+}
+
+enum EmailStatus {
+  SCHEDULED
+  PROCESSING
+  SENT
+  FAILED
+  CANCELLED
+}
