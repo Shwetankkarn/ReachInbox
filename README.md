@@ -1,20 +1,8 @@
-
-
-
-\
-
-
-\<div align="center">
-
 # ✦ ReachInbox
 
 ### Reliable email scheduling. Persistent jobs. Controlled delivery.
 
-\<img src="[https://readme-typing-svg.demolab.com?font=Fira+Code&size=18&duration=2800&pause=900&color=FF9900&center=true&vCenter=true&width=720&lines=Deployed+on+AWS+EC2;Schedule+emails+with+BullMQ+and+Redis;Rate+limiting+with+Slack+notifications;Searchable+email+records+with+Elasticsearch](https://readme-typing-svg.demolab.com?font=Fira+Code\&size=18\&duration=2800\&pause=900\&color=FF9900\&center=true\&vCenter=true\&width=720\&lines=Deployed+on+AWS+EC2;Schedule+emails+with+BullMQ+and+Redis;Rate+limiting+with+Slack+notifications;Searchable+email+records+with+Elasticsearch)" alt="ReachInbox animated tagline" />
-
 [**Live App**](https://reach-inbox-pearl-chi.vercel.app/) · [**GitHub Repository**](https://github.com/Shwetankkarn/ReachInbox)
-
-\</div>
 
 > A full-stack email scheduling application that processes delayed jobs, persists queue state, enforces email rate limits, sends Slack notifications when limits are reached, and indexes email records for search.
 
@@ -204,11 +192,6 @@ ReachInbox/
 
 ---
 
-\<div align="center">
-
 **Built with ☁️ AWS, ⚙️ BullMQ and ❤️ TypeScript**
 
 [⬆ Back to Top](#-reachinbox)
-
-\</div>
-
