@@ -1,178 +1,214 @@
-# ReachInbox – Email Scheduler
 
-ReachInbox is a simple email scheduling application that lets users schedule emails for later instead of sending them manually at a specific time.
 
-I built this project as part of the Outbox Labs assignment to practice working with background jobs, email scheduling, databases, and a full-stack application.
 
-## What can you do with ReachInbox?
+\
 
-- Sign in using your Google account.
-- Schedule emails to be sent at a selected date and time.
-- View scheduled and sent emails from the dashboard.
-- Upload recipient lists using CSV or TXT files.
-- Search emails by their details.
-- Track background jobs and see their current status.
-- Switch between light and dark mode.
 
-## How it works
+\<div align="center">
 
-After signing in, a user can compose an email, add recipients, and choose when it should be scheduled.
+# ✦ ReachInbox
 
-The application saves the email details in the database and adds a job to a background queue. A worker processes the job when it is due, while rate limits control how frequently emails can be sent.
+### Reliable email scheduling. Persistent jobs. Controlled delivery.
 
-For testing, the application uses Ethereal Email, which provides a preview of the generated email instead of delivering it like a regular production email service.
+\<img src="[https://readme-typing-svg.demolab.com?font=Fira+Code&size=18&duration=2800&pause=900&color=FF9900&center=true&vCenter=true&width=720&lines=Deployed+on+AWS+EC2;Schedule+emails+with+BullMQ+and+Redis;Rate+limiting+with+Slack+notifications;Searchable+email+records+with+Elasticsearch](https://readme-typing-svg.demolab.com?font=Fira+Code\&size=18\&duration=2800\&pause=900\&color=FF9900\&center=true\&vCenter=true\&width=720\&lines=Deployed+on+AWS+EC2;Schedule+emails+with+BullMQ+and+Redis;Rate+limiting+with+Slack+notifications;Searchable+email+records+with+Elasticsearch)" alt="ReachInbox animated tagline" />
 
-## Technologies used
+[**Live App**](https://reach-inbox-pearl-chi.vercel.app/) · [**GitHub Repository**](https://github.com/Shwetankkarn/ReachInbox)
 
-- **Frontend:** React, TypeScript, Tailwind CSS
-- **Backend:** Node.js, Express, TypeScript
-- **Database:** PostgreSQL with Prisma
-- **Background jobs:** BullMQ and Redis
-- **Search:** Elasticsearch
-- **Email testing:** Nodemailer and Ethereal Email
-- **Authentication:** Google OAuth
-- **Queue dashboard:** Bull Board
+\</div>
 
-## Running the project locally
+> A full-stack email scheduling application that processes delayed jobs, persists queue state, enforces email rate limits, sends Slack notifications when limits are reached, and indexes email records for search.
 
-### Requirements
+## ✨ Project Overview
 
-Make sure Node.js, npm, and Docker Desktop are installed.
+ReachInbox is a full-stack email scheduler built to explore reliable background job processing and cloud deployment. Users can schedule emails for a future time while a BullMQ worker processes jobs according to configured concurrency and rate limits.
 
-### 1. Download the project
+## ☁️ AWS Deployment
+
+**The backend is deployed on an Amazon EC2 Ubuntu instance.** The frontend is deployed on Vercel.
+
+| Component           | Deployment / Technology       |
+| ------------------- | ----------------------------- |
+| Frontend            | Vercel                        |
+| Backend API         | Amazon EC2 · Ubuntu · Node.js |
+| Process management  | systemd                       |
+| Job queue           | BullMQ + Redis                |
+| Database            | PostgreSQL                    |
+| Search engine       | Elasticsearch                 |
+| Email testing       | Ethereal Email + Nodemailer   |
+| Notifications       | Slack API                     |
+| Supporting services | Docker Compose                |
+
+### Deployment links
+
+- **Frontend:** [Open ReachInbox](https://reach-inbox-pearl-chi.vercel.app/)
+- **Source code:** [GitHub Repository](https://github.com/Shwetankkarn/ReachInbox)
+
+The backend is managed as a systemd service on EC2. PostgreSQL and Redis are configured to bind to localhost, and Docker Compose manages the supporting infrastructure.
+
+> Note: The backend has also been exposed through a Cloudflare Quick Tunnel for testing. Quick Tunnel URLs can change, so a stable public API URL or custom domain should be configured before publishing a permanent API link.
+
+## 🚀 Key Features
+
+- **Email scheduling:** Schedule email jobs for a specified date and time.
+- **Persistent job queue:** Use BullMQ delayed jobs backed by Redis.
+- **Background processing:** Configure worker concurrency through environment settings.
+- **Rate limiting:** Enforce hourly sending limits and minimum delays between emails.
+- **Automatic rescheduling:** Delay jobs when rate limits prevent immediate processing.
+- **Slack notifications:** Notify Slack when an email rate limit is reached.
+- **Database persistence:** Store email records and scheduling information in PostgreSQL.
+- **Email search:** Index and search email records using Elasticsearch.
+- **Queue monitoring:** Inspect job states through Bull Board.
+- **Cloud deployment:** Run the backend on AWS EC2 and host the frontend on Vercel.
+
+## 🏗️ Architecture
+
+```text
+                 ┌──────────────────────┐
+                 │   React Frontend     │
+                 │       Vercel         │
+                 └──────────┬───────────┘
+                            │ HTTPS
+                            ▼
+                 ┌──────────────────────┐
+                 │ Express API on EC2   │
+                 │       Ubuntu         │
+                 └──────────┬───────────┘
+                            │
+              ┌─────────────┼─────────────┐
+              ▼             ▼             ▼
+        PostgreSQL        Redis      Elasticsearch
+        Email records   BullMQ jobs   Email search
+                            │
+                            ▼
+                    ┌───────────────┐
+                    │ BullMQ Worker │
+                    └───────┬───────┘
+                            │
+                    ┌───────┴────────┐
+                    ▼                ▼
+              Ethereal SMTP     Slack Alerts
+              Test emails       Rate-limit alerts
+```
+
+## 🛠️ Tech Stack
+
+| Category         | Technologies                    |
+| ---------------- | ------------------------------- |
+| Frontend         | React, TypeScript, Tailwind CSS |
+| Backend          | Node.js, Express.js, TypeScript |
+| Queue processing | BullMQ, Redis                   |
+| Database         | PostgreSQL                      |
+| Search           | Elasticsearch                   |
+| Email            | Nodemailer, Ethereal Email      |
+| Notifications    | Slack API, OAuth                |
+| Infrastructure   | AWS EC2, Ubuntu, Docker Compose |
+| Deployment       | Vercel, systemd                 |
+| Version control  | Git, GitHub                     |
+
+## ⚙️ Local Setup
+
+### Prerequisites
+
+- Node.js compatible with the project configuration
+- npm
+- Docker and Docker Compose
+- Environment credentials for the services you configure
+
+### 1. Clone the repository
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
+git clone https://github.com/Shwetankkarn/ReachInbox.git
 cd ReachInbox
-npm install
 ```
 
-### 2. Start the required services
-
-```bash
-docker compose up -d
-```
-
-This starts the database, Redis, and Elasticsearch services configured for the project.
-
-### 3. Set up environment variables
-
-Create the required `.env` files using your local configuration. Add the database URL, Redis and Elasticsearch URLs, Google OAuth credentials, session secret, and rate-limit settings.
-
-Do not upload `.env` files or private credentials to GitHub.
-
-### 4. Start the backend
-
-From the project root, run:
-
-```bash
-npm run dev:api
-```
-
-### 5. Start the frontend
-
-Open another terminal in the project root and run:
-
-```bash
-npm run dev -w apps/web
-```
-
-Open the local URL shown in the terminal to use the application.
-
-## A note about email delivery
-
-This project currently uses Ethereal Email for testing. You can open the preview link printed in the backend terminal to inspect a generated email. It is not intended for sending real emails to recipients.
-
-
-## Live Demo
-
-- **Frontend:** [ReachInbox Dashboard](https://reach-inbox-pearl-chi.vercel.app/)
-- **GitHub Repository:** [Shwetankkarn/ReachInbox](https://github.com/Shwetankkarn/ReachInbox)
-
-## Deployment Architecture
-
-The application uses a cloud-based deployment architecture:
-
-- **Frontend:** Deployed on Vercel.
-- **Backend API:** Node.js and Express.js running on an Ubuntu-based Amazon EC2 instance.
-- **Process Management:** systemd manages the backend API service.
-- **Database:** PostgreSQL stores application data.
-- **Job Queue:** BullMQ uses Redis to schedule and process delayed email jobs.
-- **Search:** Elasticsearch supports searching email records.
-- **Email Testing:** Ethereal Email with Nodemailer provides test email previews.
-- **Rate-Limit Notifications:** Slack integration sends notifications when email rate limits are reached.
-
-### Infrastructure and Documentation
-
-- [Amazon EC2](https://aws.amazon.com/ec2/)
-- [Vercel Documentation](https://vercel.com/docs)
-- [Docker Compose](https://docs.docker.com/compose/)
-- [BullMQ Documentation](https://docs.bullmq.io/)
-- [Redis Documentation](https://redis.io/docs/latest/)
-- [PostgreSQL Documentation](https://www.postgresql.org/docs/)
-- [Elasticsearch Documentation](https://www.elastic.co/guide/index.html)
-- [Slack API Documentation](https://api.slack.com/)
-- [Nodemailer Documentation](https://nodemailer.com/)
-
-## Key Features
-
-- Schedule emails for a specific date and time.
-- Process scheduled emails using persistent BullMQ jobs.
-- Configure worker concurrency and email rate limits.
-- Delay jobs when rate limits are reached.
-- Send Slack notifications when rate limits are hit.
-- Store email records in PostgreSQL.
-- Index and search email records using Elasticsearch.
-- Inspect background jobs using the Bull Board dashboard.
-- Preserve queued jobs across application restarts using Redis persistence.
-
-## Environment Configuration
-
-Configure the required environment variables locally and on the server. Refer to the project's environment configuration and example files for the exact variable names.
-
-Never commit `.env` files, passwords, API keys, OAuth client secrets, Slack tokens, or other credentials to GitHub.
-
-## Running the Project
-
-Install dependencies from the repository root:
+### 2. Install dependencies
 
 ```bash
 npm install
 ```
 
-Configure the required environment variables, then start the supporting services:
+### 3. Configure environment variables
+
+Create the required environment configuration files based on the variables used by the API and frontend.
+
+Configure your PostgreSQL connection, Redis connection, Elasticsearch URL, session secrets, Google OAuth, Slack OAuth and SMTP settings as applicable.
+
+**Never commit `.env` files, passwords, access tokens or OAuth secrets to GitHub.**
+
+### 4. Start supporting services
 
 ```bash
 docker compose up -d
 ```
 
-Build the API:
+### 5. Build the backend
 
 ```bash
 npm run build -w apps/api
 ```
 
-For production deployment, configure the API service, database, Redis, Elasticsearch, OAuth credentials, and frontend API URL according to your environment.
+Use the scripts defined in the repository's `package.json` to start the API and frontend in development mode.
 
-## Important Notes
+## 📬 Email Delivery Notes
 
-- Ethereal Email is a testing service; successful sending does not mean delivery to a real recipient's inbox.
-- The Bull Board dashboard and API endpoints may require authentication.
-- The API's public URL depends on the deployment and tunnel configuration. Use a stable HTTPS domain before documenting a permanent API URL.
-- Keep production credentials out of source control.
+This project currently uses **Ethereal Email** for testing. Emails can be inspected using the preview URL generated by the backend.
 
-## Project structure
+Ethereal is a test SMTP service. A successful send does not mean the message has been delivered to a real recipient's inbox.
+
+## 📊 Queue Monitoring
+
+Bull Board provides a dashboard for inspecting job states, including:
+
+- Waiting
+- Active
+- Delayed
+- Completed
+- Failed
+- Paused
+
+The dashboard is protected by authentication. Access it through the configured API deployment after logging in.
+
+## 📚 Documentation
+
+- [Amazon EC2](https://docs.aws.amazon.com/ec2/)
+- [Docker Compose](https://docs.docker.com/compose/)
+- [BullMQ](https://docs.bullmq.io/)
+- [Redis](https://redis.io/docs/latest/)
+- [PostgreSQL](https://www.postgresql.org/docs/)
+- [Elasticsearch](https://www.elastic.co/guide/index.html)
+- [Nodemailer](https://nodemailer.com/)
+- [Slack API](https://api.slack.com/)
+- [Vercel](https://vercel.com/docs)
+
+## 📁 Project Structure
 
 ```text
 ReachInbox/
 ├── apps/
-│   ├── api/
-│   └── web/
-├── docker-compose.yml
-├── package.json
+│   ├── api/              # Express API and background worker
+│   └── web/              # Frontend application
+├── docker-compose.yml    # Supporting infrastructure
+├── package.json          # Workspace configuration
 └── README.md
 ```
 
-## Final note
+## 🎯 What I Learned
 
-This project helped me understand how email scheduling, background processing, rate limiting, database persistence, and search can work together in a full-stack application.
+- Building persistent background job workflows with BullMQ and Redis.
+- Managing concurrency and rate limits in asynchronous email processing.
+- Integrating Slack OAuth and automated notifications.
+- Using PostgreSQL for application data and Elasticsearch for search.
+- Deploying a Node.js application on AWS EC2 with systemd.
+- Managing supporting services with Docker Compose.
+- Hosting a frontend on Vercel and connecting it to a deployed API.
+
+---
+
+\<div align="center">
+
+**Built with ☁️ AWS, ⚙️ BullMQ and ❤️ TypeScript**
+
+[⬆ Back to Top](#-reachinbox)
+
+\</div>
+
