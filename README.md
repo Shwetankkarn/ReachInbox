@@ -1,4 +1,4 @@
-# ✦ ReachInbox
+# ✦ ReachInbox (AWS DEPLOYED)
 
 ### Reliable email scheduling. Persistent jobs. Controlled delivery.
 
